@@ -1,24 +1,24 @@
 import { User } from 'src/users/entities/user.entity';
 import {
-  Column,
   Entity,
-  JoinColumn,
-  ManyToOne,
   PrimaryGeneratedColumn,
+  Column,
+  OneToOne,
+  JoinColumn,
 } from 'typeorm';
 
-@Entity('caregiver_stat')
+@Entity('caregiver_stats')
 export class CaregiverStat {
-  @PrimaryGeneratedColumn({ name: 'id' })
+  @PrimaryGeneratedColumn()
   id: number;
 
-  @Column({ name: 'total_children' })
+  @OneToOne(() => User)
+  @JoinColumn()
+  caregiver: User;
+
+  @Column()
   total_children: number;
 
-  @Column({ name: 'total_report' })
+  @Column()
   total_report: number;
-
-  //   @ManyToOne(() => User, (user) => user.caregiver_stat)
-  //   @JoinColumn({ name: 'caregiver_id', referencedColumnName: 'id' })
-  //   caregiver: User;
 }

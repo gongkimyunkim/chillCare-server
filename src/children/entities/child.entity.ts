@@ -1,31 +1,23 @@
 import { User } from 'src/users/entities/user.entity';
-import {
-  Column,
-  CreateDateColumn,
-  Entity,
-  JoinColumn,
-  ManyToOne,
-  PrimaryGeneratedColumn,
-} from 'typeorm';
+import { Entity, PrimaryGeneratedColumn, Column, ManyToOne } from 'typeorm';
 
-@Entity('child')
+@Entity('children')
 export class Child {
-  @PrimaryGeneratedColumn({ name: 'id' })
+  @PrimaryGeneratedColumn()
   id: number;
 
-  @Column({ type: 'varchar', length: 255, name: 'name' })
+  @ManyToOne(() => User, (user) => user.children)
+  parent: User;
+
+  @Column()
   name: string;
 
-  @Column({ name: 'alergies', nullable: true })
-  alergies: string;
+  @Column('text')
+  allergies: string;
 
-  @Column({ name: 'health_condition', nullable: true })
+  @Column('text')
   health_condition: string;
 
-  @CreateDateColumn({ name: 'created_at' })
+  @Column({ type: 'timestamp', default: () => 'CURRENT_TIMESTAMP' })
   created_at: Date;
-
-  @ManyToOne(() => User, (user) => user.child)
-  @JoinColumn({ name: 'parent_id', referencedColumnName: 'id' })
-  parent: User;
 }

@@ -1,51 +1,52 @@
-import { application } from 'express';
 import { Application } from 'src/applications/entities/application.entity';
-import { CaregiverStat } from 'src/caregiver_stats/entities/caregiver_stat.entity';
 import { Child } from 'src/children/entities/child.entity';
 import { Schedule } from 'src/schedules/entities/schedule.entity';
-import {
-  Column,
-  CreateDateColumn,
-  Entity,
-  OneToMany,
-  PrimaryGeneratedColumn,
-} from 'typeorm';
+import { Entity, PrimaryGeneratedColumn, Column, OneToMany } from 'typeorm';
 
 @Entity('users')
 export class User {
-  @PrimaryGeneratedColumn({ name: 'id' })
+  @PrimaryGeneratedColumn()
   id: number;
 
-  @Column({ type: 'varchar', length: 255, name: 'uid' })
+  @Column()
   nickname: string;
 
-  @Column({ type: 'varchar', length: 255, name: 'phone_number' })
+  @Column({ length: 255, unique: true })
   phone_number: string;
 
-  @Column({ type: 'varchar', length: 255, name: 'name' })
+  @Column({ length: 255 })
   name: string;
 
-  @Column({ type: 'varchar', length: 255, name: 'email' })
-  email?: string;
+  @Column({ nullable: true, unique: true })
+  email: string;
 
-  @Column({ name: 'birth_date' })
-  birth_date: Date;
+  @Column('varchar', { length: 255, nullable: false, name: 'password' })
+  password: string;
+
+  @Column('longtext', { nullable: true, name: 'profile_image' })
+  profile_image: string;
+
+  @Column({ type: 'date' })
+  birth_date: string;
 
   @Column({ name: 'location' })
   location: string;
 
-  @CreateDateColumn({ name: 'created_at' })
+  @Column({ name: 'care_chanch', default: 1 })
+  care_chanch: number;
+
+  @Column({ type: 'timestamp', default: () => 'CURRENT_TIMESTAMP' })
   created_at: Date;
 
   @OneToMany(() => Child, (child) => child.parent)
-  child: [];
+  children: Child[];
 
   @OneToMany(() => Schedule, (schedule) => schedule.caregiver)
-  schedule: [];
+  schedules: Schedule[];
 
-  // @OneToMany(() => CaregiverStat, {caregiver_stat} => caregiver_stat.caregiver)
-  // caregiver_stat: [];
+  @OneToMany(() => Application, (application) => application.parent)
+  parentApplications: Application[];
 
-  // @OneToMany(() => Application, {application} => application.user)
-  // applications: [];
+  @OneToMany(() => Application, (application) => application.caregiver)
+  caregiverApplications: Application[];
 }
