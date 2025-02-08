@@ -6,6 +6,7 @@ import {
   Column,
   ManyToOne,
   OneToMany,
+  JoinColumn,
 } from 'typeorm';
 
 @Entity('schedules')
@@ -14,6 +15,7 @@ export class Schedule {
   id: number;
 
   @ManyToOne(() => User, (user) => user.schedules)
+  @JoinColumn({ name: 'caregiver', referencedColumnName: 'id' })
   caregiver: User;
 
   @Column()
@@ -23,7 +25,7 @@ export class Schedule {
   description: string;
 
   @Column()
-  start_time: string;
+  time: string;
 
   @Column()
   location: string;

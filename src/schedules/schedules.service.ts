@@ -34,14 +34,20 @@ export class SchedulesService {
     }
   }
 
-  async findOne(schedule_id: number) {
+  async findOne(id: number) {
     try {
-      const schedule = await this.scheduleRepository.findOneBy({
-        id: schedule_id,
+      const schedule = await this.scheduleRepository.findOne({
+        where: { id: id },
       });
+
       if (!schedule) {
         return this.responseStrategy.notFound('Schedule not found');
       }
+
+      return this.responseStrategy.success(
+        'Schedule retrieve successfully',
+        schedule,
+      );
     } catch (error) {
       return this.responseStrategy.error('Failed to retrieve schedules');
     }
