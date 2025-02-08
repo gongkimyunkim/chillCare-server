@@ -29,6 +29,9 @@ export class User {
   @Column({ type: 'date' })
   birth_date: string;
 
+  @Column({ name: 'keyword', nullable: true })
+  keyword: string;
+
   @Column({ name: 'location' })
   location: string;
 

@@ -7,7 +7,7 @@ import { ResponseStrategy } from 'src/strategies/response.strategy';
 
 @Module({
   imports: [TypeOrmModule.forFeature([User])],
-  providers: [UsersService],
+  providers: [UsersService, ResponseStrategy],
   controllers: [UsersController],
   exports: [UsersService],
 })
