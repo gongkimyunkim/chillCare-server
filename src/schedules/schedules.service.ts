@@ -19,6 +19,34 @@ export class SchedulesService {
     private userRepository: Repository<User>,
   ) {}
 
+  async findAll() {
+    try {
+      const schedule = await this.scheduleRepository.find();
+
+      return schedule.length === 0
+        ? this.responseStrategy.noContent('Schedules not found')
+        : this.responseStrategy.success(
+            'Schedules retrieve successfully',
+            schedule,
+          );
+    } catch (error) {
+      return this.responseStrategy.error('Failed to retrieve schedules');
+    }
+  }
+
+  async findOne(schedule_id: number) {
+    try {
+      const schedule = await this.scheduleRepository.findOneBy({
+        id: schedule_id,
+      });
+      if (!schedule) {
+        return this.responseStrategy.notFound('Schedule not found');
+      }
+    } catch (error) {
+      return this.responseStrategy.error('Failed to retrieve schedules');
+    }
+  }
+
   async create(caregiver: User, createScheduleDto: CreateScheduleDto) {
     try {
       const newSchedule = this.scheduleRepository.create({

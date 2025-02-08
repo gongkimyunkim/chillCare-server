@@ -6,9 +6,20 @@ import { Schedule } from './entities/schedule.entity';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { UsersModule } from 'src/users/users.module';
 import { User } from 'src/users/entities/user.entity';
+import { JwtModule } from '@nestjs/jwt';
+import { ConfigService } from '@nestjs/config';
 
 @Module({
-  imports: [TypeOrmModule.forFeature([Schedule, User]), UsersModule],
+  imports: [
+    JwtModule.registerAsync({
+      useFactory: (config: ConfigService) => ({
+        secret: config.get<string>('JWT_SECRET_KEY'),
+      }),
+      inject: [ConfigService],
+    }),
+    TypeOrmModule.forFeature([Schedule, User]),
+    UsersModule,
+  ],
   providers: [SchedulesService, ResponseStrategy],
   controllers: [SchedulesController],
 })

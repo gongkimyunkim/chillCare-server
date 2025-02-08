@@ -80,6 +80,8 @@ export class AuthService {
 
   private async checkUsername(nickname: string): Promise<boolean> {
     const user = await this.userRepository.findOneBy({ nickname });
+    if (!user) {
+    }
     return !user;
   }
 

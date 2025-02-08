@@ -22,11 +22,8 @@ export class Schedule {
   @Column('text')
   description: string;
 
-  @Column({ type: 'timestamp' })
-  start_time: Date;
-
-  @Column({ type: 'timestamp' })
-  end_time: Date;
+  @Column()
+  start_time: string;
 
   @Column()
   location: string;
